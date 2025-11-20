@@ -23,6 +23,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("main"), 600, 400);
+        stage.setTitle("Torino Pizza Management Software");
         stage.setScene(scene);
         stage.show();
     }

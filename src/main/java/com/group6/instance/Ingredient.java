@@ -37,6 +37,10 @@ public class Ingredient {
         return id.get();
     }
 
+    public String getName() {
+        return name.get();
+    }
+
     public String getDescription() {
         return description.get();
     }
@@ -45,7 +49,20 @@ public class Ingredient {
         return price.get();
     }
 
+    @Override
     public String toString() {
         return name.get();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Ingredient that = (Ingredient) obj;
+        return this.getId() == that.getId();
     }
 }

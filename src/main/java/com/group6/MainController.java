@@ -34,19 +34,13 @@ public class MainController {
     private TableColumn<DisplayPizza, String> toppingsColumn;
 
     @FXML
-    private void populatePizzaTable() {
-        List<DisplayPizza> pizzas = App.databaseManager.getAllPizzas();
-        pizzaTableView.getItems().setAll(pizzas);
-    }
-
-    @FXML
     public void initialize() {
         initializePizzaTable();
+        updatePizzaTable();
         initializeEditPizzaButton();
     }
 
-    @FXML
-    private void onEditPizzaButtonClick() {
+    public void onEditPizzaButtonClick() {
         DisplayPizza selectedPizza = pizzaTableView.getSelectionModel().getSelectedItem();
         if (selectedPizza == null) {
             return;
@@ -55,6 +49,11 @@ public class MainController {
         LiteralPizza literalPizza = App.databaseManager.getLiteralPizzaByDisplayPizza(selectedPizza);
 
         openEditPizzaWindow(literalPizza);
+    }
+
+    public void updatePizzaTable() {
+        List<DisplayPizza> pizzas = App.databaseManager.getAllPizzas();
+        pizzaTableView.getItems().setAll(pizzas);
     }
 
     private void initializePizzaTable() {
@@ -73,8 +72,6 @@ public class MainController {
             });
             return row;
         });
-
-        populatePizzaTable();
     }
 
     private void initializeEditPizzaButton() {
@@ -88,6 +85,7 @@ public class MainController {
 
             EditPizzaController controller = loader.getController();
             controller.setSelectedPizza(pizza);
+            controller.setMainController(this);
             controller.manualInitialize();
 
             Stage stage = new Stage();

@@ -8,21 +8,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-
 <Pane prefHeight="400.0" prefWidth="298.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group6.EditPizzaController">
    <children>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="374.0" prefWidth="298.0">
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="298.0">
          <children>
-            <Button fx:id="saveChanges" layoutX="197.0" layoutY="360.0" mnemonicParsing="false" text="Save changes" />
-            <Button fx:id="discardChanges" layoutX="85.0" layoutY="360.0" mnemonicParsing="false" text="Discard changes" />
+            <Button fx:id="saveChangesButton" layoutX="197.0" layoutY="360.0" mnemonicParsing="false" onAction="#saveAndClose" text="Save changes" />
+            <Button fx:id="discardChangesButton" layoutX="85.0" layoutY="360.0" mnemonicParsing="false" onAction="#discardAndClose" text="Discard changes" />
             <Label layoutX="14.0" layoutY="18.0" text="Name:" />
-            <TextField fx:id="nameTextField" layoutX="136.0" layoutY="14.0" />
+            <TextField fx:id="nameTextField" layoutX="136.0" layoutY="14.0" onKeyTyped="#validateNameInputAndApply" />
             <ListView fx:id="ingredientListView" layoutX="37.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" />
             <Label layoutX="14.0" layoutY="56.0" text="Price:" />
-            <TextField fx:id="priceTextField" layoutX="136.0" layoutY="52.0" />
+            <TextField fx:id="priceTextField" layoutX="136.0" layoutY="52.0" onKeyTyped="#validatePriceInputAndApply" />
             <Label layoutX="119.0" layoutY="117.0" text="Ingredients" />
-            <Button fx:id="addIngredientButton" layoutX="237.0" layoutY="142.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="+" />
-            <Button fx:id="removeIngredientButton" layoutX="237.0" layoutY="167.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="-" />
+            <Button fx:id="addIngredientButton" layoutX="237.0" layoutY="142.0" mnemonicParsing="false" onAction="#openIngredientSelectionList" prefHeight="25.0" prefWidth="25.0" text="+" />
+            <Button fx:id="removeIngredientButton" layoutX="237.0" layoutY="167.0" mnemonicParsing="false" onAction="#removeIngredient" prefHeight="25.0" prefWidth="25.0" text="-" />
             <Separator layoutX="26.0" layoutY="99.0" prefHeight="0.0" prefWidth="246.0" />
          </children>
       </AnchorPane>

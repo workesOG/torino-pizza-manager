@@ -98,4 +98,69 @@ public class DatabaseManager {
         }
         return ingredients;
     }
+
+    public List<Ingredient> getAllIngredients() {
+        Connection conn = establishConnection();
+        List<Ingredient> ingredients = new ArrayList<>();
+        try {
+            CallableStatement stmt = conn.prepareCall("{CALL listIngredients()}");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                ingredients.add(new Ingredient(rs.getInt("ingredient_id"), rs.getString("ingredient_name"),
+                        rs.getString("ingredient_desc"), rs.getDouble("ingredient_price")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return ingredients;
+    }
+    
+    public void changePizzaName(int pizzaId, String name) {
+        Connection conn = establishConnection();
+        try {
+            CallableStatement stmt = conn.prepareCall("{CALL changePizzaName(?, ?)}");
+            stmt.setInt(1, pizzaId);
+            stmt.setString(2, name);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void changePizzaPrice(int pizzaId, double price) {
+        Connection conn = establishConnection();
+        try {
+            CallableStatement stmt = conn.prepareCall("{CALL changePizzaPrice(?, ?)}");
+            stmt.setInt(1, pizzaId);
+            stmt.setDouble(2, price);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addIngredientToPizza(int pizzaId, int ingredientId) {
+        Connection conn = establishConnection();
+        try {
+            CallableStatement stmt = conn.prepareCall("{CALL addPizzaIngredient(?, ?)}");
+            stmt.setInt(1, pizzaId);
+            stmt.setInt(2, ingredientId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeIngredientFromPizza(int pizzaId, int ingredientId) {
+        Connection conn = establishConnection();
+        try {
+            CallableStatement stmt = conn.prepareCall("{CALL removePizzaIngredient(?, ?)}");
+            stmt.setInt(1, pizzaId);
+            stmt.setInt(2, ingredientId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
