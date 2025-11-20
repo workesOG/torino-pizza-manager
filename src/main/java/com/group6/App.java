@@ -16,12 +16,13 @@ public class App extends Application {
     private final static String USER = "root";
     private final static String PASSWORD = System.getenv("LOCAL_DB_PASSWORD");
 
+    public static DatabaseManager databaseManager;
+
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("main"), 600, 400);
         stage.setScene(scene);
         stage.show();
     }
@@ -36,15 +37,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        makeDBConnection();
+        databaseManager = new DatabaseManager(URL, USER, PASSWORD);
         launch();
-    }
-
-    private static void makeDBConnection() {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            System.out.println("Connected!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
