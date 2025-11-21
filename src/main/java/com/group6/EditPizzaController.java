@@ -176,9 +176,9 @@ public class EditPizzaController {
             return;
         }
 
-        if (value > 1000) {
-            value = 1000;
-            cleaned = "1000";
+        if (value > 999) {
+            value = 999;
+            cleaned = "999";
         }
 
         int caretPosition = priceTextField.getCaretPosition();

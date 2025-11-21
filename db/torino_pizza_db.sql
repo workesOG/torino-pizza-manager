@@ -25,7 +25,7 @@ CREATE TABLE ingredient(
 CREATE TABLE pizza(
 	pizza_id INT AUTO_INCREMENT,
     pizza_name VARCHAR(50) NOT NULL,
-    pizza_price DECIMAL(5, 1) NOT NULL,
+    pizza_price DECIMAL(4, 1) NOT NULL,
     PRIMARY KEY(pizza_id)
 );
 
