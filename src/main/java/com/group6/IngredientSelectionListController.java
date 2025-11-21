@@ -10,13 +10,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
+// Controller class for the ingredient selection list
 public class IngredientSelectionListController {
     // Ingredients that should not be shown in the list, because they are already in
     // the pizza
     private List<Ingredient> allIngredients;
     private List<Ingredient> ignoreIngredients;
 
-    private EditPizzaController editPizzaController;
+    private EditOrCreatePizzaController editPizzaController;
 
     @FXML
     private ListView<Ingredient> ingredientListView;
@@ -39,7 +40,7 @@ public class IngredientSelectionListController {
         this.ignoreIngredients = ignoreIngredients;
     }
 
-    public void setEditPizzaController(EditPizzaController editPizzaController) {
+    public void setEditPizzaController(EditOrCreatePizzaController editPizzaController) {
         this.editPizzaController = editPizzaController;
     }
 

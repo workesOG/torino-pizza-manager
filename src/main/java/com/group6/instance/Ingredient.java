@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+// A class for an ingredient. Used to store an ingredient with its name, description and price.
 public class Ingredient {
     private final SimpleIntegerProperty id = new SimpleIntegerProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();

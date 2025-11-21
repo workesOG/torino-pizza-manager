@@ -22,7 +22,8 @@ import com.group6.instance.PendingPizzaOperation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 
-public class EditPizzaController {
+// Controller class for the edit / create pizza screen
+public class EditOrCreatePizzaController {
     private LiteralPizza selectedPizza;
     private List<Ingredient> ingredients;
 

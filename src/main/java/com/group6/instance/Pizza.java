@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+// A base class for a pizza.
 public class Pizza {
     private final SimpleIntegerProperty id = new SimpleIntegerProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();

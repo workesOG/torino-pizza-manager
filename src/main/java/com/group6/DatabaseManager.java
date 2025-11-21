@@ -8,6 +8,7 @@ import com.group6.instance.LiteralPizza;
 import com.group6.instance.DisplayPizza;
 import com.group6.instance.Ingredient;
 
+// A static instance of this is used to interact with the database.
 public class DatabaseManager {
     private final String URL;
     private final String USER;

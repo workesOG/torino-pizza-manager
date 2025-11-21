@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import com.group6.instance.DisplayPizza;
 import com.group6.instance.LiteralPizza;
 
+// Controller class for the main screen
 public class MainController {
     @FXML
     private TableView<DisplayPizza> pizzaTableView;
@@ -103,7 +104,7 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("editOrCreatePizza.fxml"));
             Parent root = loader.load();
 
-            EditPizzaController controller = loader.getController();
+            EditOrCreatePizzaController controller = loader.getController();
             controller.setMainController(this);
             controller.manualInitialize(pizza);
 
@@ -123,7 +124,7 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("editOrCreatePizza.fxml"));
             Parent root = loader.load();
 
-            EditPizzaController controller = loader.getController();
+            EditOrCreatePizzaController controller = loader.getController();
             controller.setMainController(this);
             controller.manualInitialize();
 

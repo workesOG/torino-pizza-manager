@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.group6.App;
 
+// A class for a pending pizza operation. Used to store a pizza operation that has not been executed yet, so that it can be executed later in the right order.
 public class PendingPizzaOperation {
     public enum OperationType {
         SET_NAME,

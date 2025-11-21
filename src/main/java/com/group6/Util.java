@@ -6,6 +6,7 @@ import java.util.List;
 import com.group6.instance.DisplayPizza;
 import com.group6.instance.Ingredient;
 
+// A static class for utility functions. Used for debugging and data parsing.
 public class Util {
     public static void printIngredientList(List<Ingredient> list) {
         for (Ingredient ingredient : list) {

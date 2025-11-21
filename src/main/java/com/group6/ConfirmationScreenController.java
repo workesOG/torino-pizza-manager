@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+// Controller class for a generic confirmation screen
 public class ConfirmationScreenController {
     @FXML
     private Label choiceLabel;

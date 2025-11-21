@@ -3,6 +3,7 @@ package com.group6.instance;
 import javafx.beans.property.SimpleStringProperty;
 import java.util.List;
 
+// A class for a display pizza. Used to store a pizza with its ingredients in a way that is easy to display.
 public class DisplayPizza extends Pizza {
     private final SimpleStringProperty ingredients = new SimpleStringProperty();
 
