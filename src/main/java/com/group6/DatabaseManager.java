@@ -19,6 +19,7 @@ public class DatabaseManager {
         PASSWORD = password;
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     private Connection establishConnection() {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
@@ -40,12 +41,13 @@ public class DatabaseManager {
                 pizzas.add(new DisplayPizza(rs.getInt("pizza_id"), rs.getString("pizza_name"),
                         rs.getDouble("pizza_price"), rs.getString("ingredients")));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return pizzas;
 
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public LiteralPizza getPizzaById(int id) {
         Connection conn = establishConnection();
         try {
@@ -68,6 +70,7 @@ public class DatabaseManager {
         return getPizzaById(displayPizza.getId());
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public Ingredient getIngredientById(int ingredientId) {
         Connection conn = establishConnection();
         try {
@@ -99,6 +102,7 @@ public class DatabaseManager {
         return ingredients;
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public List<Ingredient> getAllIngredients() {
         Connection conn = establishConnection();
         List<Ingredient> ingredients = new ArrayList<>();
@@ -115,7 +119,8 @@ public class DatabaseManager {
         }
         return ingredients;
     }
-    
+
+    @SuppressWarnings("CallToPrintStackTrace")
     public void changePizzaName(int pizzaId, String name) {
         Connection conn = establishConnection();
         try {
@@ -128,6 +133,7 @@ public class DatabaseManager {
         }
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public void changePizzaPrice(int pizzaId, double price) {
         Connection conn = establishConnection();
         try {
@@ -140,6 +146,7 @@ public class DatabaseManager {
         }
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public void addIngredientToPizza(int pizzaId, int ingredientId) {
         Connection conn = establishConnection();
         try {
@@ -152,6 +159,7 @@ public class DatabaseManager {
         }
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public void removeIngredientFromPizza(int pizzaId, int ingredientId) {
         Connection conn = establishConnection();
         try {
@@ -161,6 +169,55 @@ public class DatabaseManager {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("CallToPrintStackTrace")
+    public void removePizza(int pizzaId) {
+        Connection conn = establishConnection();
+        try {
+            CallableStatement stmt = conn.prepareCall("{CALL removePizza(?)}");
+            stmt.setInt(1, pizzaId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int createPizza(String name, double price, List<Integer> ingredientIds) {
+        Connection conn = establishConnection();
+        try {
+            conn.setAutoCommit(false);
+
+            CallableStatement stmt = conn.prepareCall("{CALL createPizza(?, ?, ?)}");
+            stmt.setString(1, name);
+            stmt.setDouble(2, price);
+            stmt.registerOutParameter(3, Types.INTEGER);
+            stmt.executeUpdate();
+
+            int pizzaId = stmt.getInt(3);
+            if (ingredientIds != null && !ingredientIds.isEmpty()) {
+                for (Integer ingredientId : ingredientIds) {
+                    CallableStatement addIngStmt = conn.prepareCall("{CALL addPizzaIngredient(?, ?)}");
+                    addIngStmt.setInt(1, pizzaId);
+                    addIngStmt.setInt(2, ingredientId);
+                    addIngStmt.executeUpdate();
+                }
+            }
+
+            conn.commit();
+            return pizzaId;
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ignored) {
+            }
+            return -1;
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ignored) {
+            }
         }
     }
 }

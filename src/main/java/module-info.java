@@ -1,9 +1,9 @@
 module com.group6 {
-    requires javafx.controls;
-    requires javafx.fxml;
-    requires java.sql;
-    requires javafx.base;
-    requires javafx.graphics;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
+    requires transitive java.sql;
+    requires transitive javafx.base;
+    requires transitive javafx.graphics;
 
     opens com.group6 to javafx.fxml;
 

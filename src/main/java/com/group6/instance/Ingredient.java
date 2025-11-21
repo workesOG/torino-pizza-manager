@@ -1,5 +1,7 @@
 package com.group6.instance;
 
+import java.util.Objects;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -64,5 +66,10 @@ public class Ingredient {
         }
         Ingredient that = (Ingredient) obj;
         return this.getId() == that.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

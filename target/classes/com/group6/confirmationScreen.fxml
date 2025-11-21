@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group6.ConfirmationScreenController">
+   <children>
+      <Button fx:id="option1Button" layoutX="14.0" layoutY="111.0" mnemonicParsing="false" onAction="#onOption1ButtonClick" text="Option 1" />
+      <Button fx:id="option2Button" layoutX="173.0" layoutY="111.0" mnemonicParsing="false" onAction="#onOption2ButtonClick" text="Option 2" />
+      <Label fx:id="choiceLabel" alignment="CENTER" layoutX="12.0" layoutY="8.0" prefHeight="55.0" prefWidth="227.0" text="Choice" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

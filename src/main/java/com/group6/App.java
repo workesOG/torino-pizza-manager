@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.sql.*;
 
 /**
  * JavaFX App
@@ -28,6 +27,7 @@ public class App extends Application {
         stage.show();
     }
 
+    @SuppressWarnings("unused")
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }

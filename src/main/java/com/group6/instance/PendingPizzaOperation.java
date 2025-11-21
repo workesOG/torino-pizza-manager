@@ -174,19 +174,15 @@ public class PendingPizzaOperation {
     public void execute() {
         switch (type) {
             case SET_NAME:
-                System.out.println("Changing pizza name to " + name);
                 App.databaseManager.changePizzaName(pizzaId, name);
                 break;
             case SET_PRICE:
-                System.out.println("Changing pizza price to " + price);
                 App.databaseManager.changePizzaPrice(pizzaId, price);
                 break;
             case ADD_INGREDIENT:
-                System.out.println("Adding ingredient " + ingredient.getName() + " to pizza " + pizzaId);
                 App.databaseManager.addIngredientToPizza(pizzaId, ingredient.getId());
                 break;
             case REMOVE_INGREDIENT:
-                System.out.println("Removing ingredient " + ingredient.getName() + " from pizza " + pizzaId);
                 App.databaseManager.removeIngredientFromPizza(pizzaId, ingredient.getId());
                 break;
         }

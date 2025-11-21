@@ -12,11 +12,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.group6.instance.Ingredient;
 import com.group6.instance.LiteralPizza;
 import com.group6.instance.PendingPizzaOperation;
+
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableValue;
 
 public class EditPizzaController {
     private LiteralPizza selectedPizza;
@@ -25,6 +29,8 @@ public class EditPizzaController {
     private List<PendingPizzaOperation> pendingOperations = new ArrayList<>();
 
     private MainController mainController;
+
+    private boolean creationMode = false;
 
     @FXML
     private TextField nameTextField;
@@ -38,15 +44,15 @@ public class EditPizzaController {
     private Button discardChangesButton;
 
     @FXML
-    private Button addIngredientButton;
-    @FXML
     private Button removeIngredientButton;
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
-    public void manualInitialize() {
+    public void manualInitialize(LiteralPizza pizza) {
+        creationMode = false;
+        selectedPizza = pizza;
         nameTextField.setText(selectedPizza.getName());
         priceTextField.setText(String.valueOf(selectedPizza.getPrice()));
         removeIngredientButton.disableProperty()
@@ -55,8 +61,22 @@ public class EditPizzaController {
         updateIngredientListView();
     }
 
-    public void setSelectedPizza(LiteralPizza pizza) {
-        selectedPizza = pizza;
+    public void manualInitialize() {
+        creationMode = true;
+        selectedPizza = App.databaseManager
+                .getPizzaById(App.databaseManager
+                        .createPizza("New Pizza", 0.0, new ArrayList<>(Arrays.asList(1, 2))));
+
+        saveChangesButton.setText("Create Pizza");
+        discardChangesButton.setText("Cancel Creation");
+        nameTextField.setText(selectedPizza.getName());
+        priceTextField.setText(String.valueOf(selectedPizza.getPrice()));
+        saveChangesButton.disableProperty()
+                .bind(validatePizzaCreationStatus());
+        removeIngredientButton.disableProperty()
+                .bind(ingredientListView.getSelectionModel().selectedItemProperty().isNull());
+        initializeIngredients();
+        updateIngredientListView();
     }
 
     private void initializeIngredients() {
@@ -168,6 +188,7 @@ public class EditPizzaController {
         changePrice(value);
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public void openIngredientSelectionList() {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("ingredientSelectionList.fxml"));
@@ -198,11 +219,40 @@ public class EditPizzaController {
     }
 
     public void discardAndClose() {
+        if (creationMode) {
+            App.databaseManager.removePizza(selectedPizza.getId());
+        }
         closeStage();
     }
 
     private void closeStage() {
         Stage stage = (Stage) discardChangesButton.getScene().getWindow();
         stage.close();
+    }
+
+    private ObservableValue<Boolean> validatePizzaCreationStatus() {
+        return Bindings.createBooleanBinding(() -> {
+            if (nameTextField.getText().isEmpty()) {
+                return true;
+            }
+
+            if (priceTextField.getText().isEmpty()) {
+                return true;
+            }
+
+            try {
+                double price = Double.parseDouble(priceTextField.getText());
+                if (price < 0) {
+                    return true;
+                }
+            } catch (NumberFormatException ex) {
+                return true;
+            }
+
+            return ingredientListView.getItems().isEmpty();
+        },
+                nameTextField.textProperty(),
+                priceTextField.textProperty(),
+                ingredientListView.itemsProperty());
     }
 }

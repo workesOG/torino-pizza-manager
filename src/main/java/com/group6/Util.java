@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.group6.instance.DisplayPizza;
 import com.group6.instance.Ingredient;
-import com.group6.instance.Pizza;
 
 public class Util {
     public static void printIngredientList(List<Ingredient> list) {
@@ -21,7 +20,12 @@ public class Util {
         }
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public static List<Integer> interpretLiteralPizzaIngredientList(String ingredientList) {
+        if (ingredientList == null || ingredientList.isEmpty()) {
+            return new ArrayList<>();
+        }
+
         List<Integer> ingredientIds = new ArrayList<>();
         String[] ingredientStrings = ingredientList.split(", ");
         for (String ingredientString : ingredientStrings) {

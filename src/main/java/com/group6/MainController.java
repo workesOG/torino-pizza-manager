@@ -3,7 +3,6 @@ package com.group6;
 import java.io.IOException;
 import java.util.List;
 
-import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,6 +22,8 @@ public class MainController {
     private TableView<DisplayPizza> pizzaTableView;
     @FXML
     private Button editPizzaButton;
+    @FXML
+    private Button removePizzaButton;
 
     @FXML
     private TableColumn<DisplayPizza, Integer> idColumn;
@@ -37,7 +38,7 @@ public class MainController {
     public void initialize() {
         initializePizzaTable();
         updatePizzaTable();
-        initializeEditPizzaButton();
+        initializeButtons();
     }
 
     public void onEditPizzaButtonClick() {
@@ -49,6 +50,23 @@ public class MainController {
         LiteralPizza literalPizza = App.databaseManager.getLiteralPizzaByDisplayPizza(selectedPizza);
 
         openEditPizzaWindow(literalPizza);
+    }
+
+    public void onAddPizzaButtonClick() {
+        openCreatePizzaWindow();
+    }
+
+    public void onRemovePizzaButtonClick() {
+        LiteralPizza selectedPizza = App.databaseManager
+                .getLiteralPizzaByDisplayPizza(pizzaTableView.getSelectionModel().getSelectedItem());
+        ConfirmationScreenController.openConfirmationWindow(
+                String.format("Remove Pizza '%s'?", selectedPizza.getName()), "Confirm",
+                "Cancel", () -> {
+                    App.databaseManager.removePizza(selectedPizza.getId());
+                    updatePizzaTable();
+                }, () -> {
+
+                });
     }
 
     public void updatePizzaTable() {
@@ -74,22 +92,43 @@ public class MainController {
         });
     }
 
-    private void initializeEditPizzaButton() {
+    private void initializeButtons() {
         editPizzaButton.disableProperty().bind(pizzaTableView.getSelectionModel().selectedItemProperty().isNull());
+        removePizzaButton.disableProperty().bind(pizzaTableView.getSelectionModel().selectedItemProperty().isNull());
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     private void openEditPizzaWindow(LiteralPizza pizza) {
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("editPizza.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("editOrCreatePizza.fxml"));
             Parent root = loader.load();
 
             EditPizzaController controller = loader.getController();
-            controller.setSelectedPizza(pizza);
+            controller.setMainController(this);
+            controller.manualInitialize(pizza);
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Pizza: " + pizza.getName());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("CallToPrintStackTrace")
+    private void openCreatePizzaWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("editOrCreatePizza.fxml"));
+            Parent root = loader.load();
+
+            EditPizzaController controller = loader.getController();
             controller.setMainController(this);
             controller.manualInitialize();
 
             Stage stage = new Stage();
-            stage.setTitle("Edit Pizza: " + pizza.getName());
+            stage.setTitle("Create new pizza");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
