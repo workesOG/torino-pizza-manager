@@ -15,25 +15,25 @@ CREATE TABLE customer(
 );
 
 CREATE TABLE ingredient(
-	ingredient_id INT AUTO_INCREMENT,
-    ingredient_name VARCHAR(50),
+	ingredient_id INT AUTO_INCREMENT NOT NULL,
+    ingredient_name VARCHAR(50) NOT NULL,
     ingredient_desc VARCHAR(200),
-    ingredient_price DECIMAL(3, 1),
+    ingredient_price DECIMAL(3, 1) NOT NULL,
     PRIMARY KEY(ingredient_id)
 );
 
 CREATE TABLE pizza(
 	pizza_id INT AUTO_INCREMENT,
-    pizza_name VARCHAR(50),
-    pizza_price DECIMAL(5, 1),
+    pizza_name VARCHAR(50) NOT NULL,
+    pizza_price DECIMAL(5, 1) NOT NULL,
     PRIMARY KEY(pizza_id)
 );
 
 CREATE TABLE `order`(
 	order_id INT AUTO_INCREMENT,
-	customer_id INT,
-    order_date DATETIME,
-    order_price DECIMAL(7, 1),
+	customer_id INT NOT NULL,
+    order_date DATETIME NOT NULL,
+    order_price DECIMAL(7, 1) NOT NULL,
     PRIMARY KEY(order_id),
     FOREIGN KEY(customer_id) REFERENCES customer(customer_id)
 );
@@ -49,10 +49,10 @@ CREATE TABLE pizza_ingredient(
 CREATE TABLE order_item(
     order_item_id INT AUTO_INCREMENT,
     order_id INT NOT NULL,
-    pizza_id INT NOT NULL,
+    pizza_id INT,
     PRIMARY KEY (order_item_id),
     FOREIGN KEY (order_id) REFERENCES `order`(order_id),
-    FOREIGN KEY (pizza_id) REFERENCES pizza(pizza_id)
+    FOREIGN KEY (pizza_id) REFERENCES pizza(pizza_id) ON DELETE SET NULL
 );
 
 CREATE TABLE order_item_customization(
@@ -165,7 +165,8 @@ INSERT INTO order_item (order_id, pizza_id) VALUES
 INSERT INTO order_item_customization(order_item_id, ingredient_id, action) VALUES
 (1, 3, 'remove'),
 (2, 3, 'add'),
-(2, 5, 'add');
+(2, 5, 'add'),
+(6, 6, 'add');
 
 -- Couriers
 INSERT INTO courier (first_name, last_name, phone) VALUES

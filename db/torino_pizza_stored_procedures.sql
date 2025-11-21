@@ -63,7 +63,7 @@ BEGIN
 	FROM `order` o
 	JOIN customer c ON o.customer_id = c.customer_id
 	JOIN order_item oi ON o.order_id = oi.order_id
-	JOIN pizza p ON p.pizza_id = oi.pizza_id
+	LEFT JOIN pizza p ON p.pizza_id = oi.pizza_id
 	GROUP BY
 		o.order_id,
 		o.order_date,
@@ -90,7 +90,7 @@ BEGIN
 	FROM `order` o
 	JOIN customer c ON o.customer_id = c.customer_id
 	JOIN order_item oi ON o.order_id = oi.order_id
-	JOIN pizza p ON p.pizza_id = oi.pizza_id
+	LEFT JOIN pizza p ON p.pizza_id = oi.pizza_id
     
     LEFT JOIN order_item_customization oic
 		ON oi.order_item_id = oic.order_item_id
@@ -115,8 +115,8 @@ BEGIN
 		GROUP_CONCAT(i.ingredient_id SEPARATOR ', ') AS ingredient_id_list
         
 	FROM pizza p
-	JOIN pizza_ingredient pi ON pi.pizza_id = p.pizza_id 
-	JOIN ingredient i ON i.ingredient_id = pi.ingredient_id
+	LEFT JOIN pizza_ingredient pi ON pi.pizza_id = p.pizza_id 
+	LEFT JOIN ingredient i ON i.ingredient_id = pi.ingredient_id
     
     WHERE p.pizza_id = target_pizza_id
     
@@ -363,9 +363,34 @@ CREATE PROCEDURE removePizzaIngredient (
     IN p_ingredient_id INT
 )
 BEGIN
-    DELETE FROM pizza_ingredient
-    WHERE pizza_id = p_pizza_id
+    DELETE FROM pizza_ingredient pi
+    WHERE pi.pizza_id = p_pizza_id
       AND ingredient_id = p_ingredient_id;
+END$
+
+DROP PROCEDURE IF EXISTS removePizza$
+CREATE PROCEDURE removePizza (
+    IN p_pizza_id INT
+)
+BEGIN
+    DELETE FROM pizza_ingredient pi
+    WHERE pi.pizza_id = p_pizza_id;
+    
+    DELETE FROM pizza p
+    WHERE p.pizza_id = p_pizza_id;
+END$
+
+DROP PROCEDURE IF EXISTS createPizza$
+CREATE PROCEDURE createPizza (
+    IN p_name VARCHAR(50),
+    IN p_price DOUBLE(5, 1),
+    OUT new_id INT
+)
+BEGIN
+	INSERT INTO pizza (pizza_name, pizza_price) VALUES
+    (p_name, p_price);
+    
+    SET new_id = LAST_INSERT_ID();
 END$
 
 DELIMITER ;
