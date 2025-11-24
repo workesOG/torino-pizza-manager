@@ -14,19 +14,19 @@ CREATE TABLE customer(
     PRIMARY KEY(customer_id)
 );
 
+CREATE TABLE pizza(
+	pizza_id INT AUTO_INCREMENT,
+    pizza_name VARCHAR(50) NOT NULL,
+    pizza_price DECIMAL(4, 1) NOT NULL,
+    PRIMARY KEY(pizza_id)
+);
+
 CREATE TABLE ingredient(
 	ingredient_id INT AUTO_INCREMENT NOT NULL,
     ingredient_name VARCHAR(50) NOT NULL,
     ingredient_desc VARCHAR(200),
     ingredient_price DECIMAL(3, 1) NOT NULL,
     PRIMARY KEY(ingredient_id)
-);
-
-CREATE TABLE pizza(
-	pizza_id INT AUTO_INCREMENT,
-    pizza_name VARCHAR(50) NOT NULL,
-    pizza_price DECIMAL(4, 1) NOT NULL,
-    PRIMARY KEY(pizza_id)
 );
 
 CREATE TABLE `order`(
@@ -38,14 +38,6 @@ CREATE TABLE `order`(
     FOREIGN KEY(customer_id) REFERENCES customer(customer_id)
 );
 
-CREATE TABLE pizza_ingredient(
-	pizza_id INT NOT NULL,
-    ingredient_id INT NOT NULL,
-    PRIMARY KEY (pizza_id, ingredient_id),
-    FOREIGN KEY (pizza_id) REFERENCES pizza(pizza_id),
-    FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id)
-);
-
 CREATE TABLE order_item(
     order_item_id INT AUTO_INCREMENT,
     order_id INT NOT NULL,
@@ -53,6 +45,14 @@ CREATE TABLE order_item(
     PRIMARY KEY (order_item_id),
     FOREIGN KEY (order_id) REFERENCES `order`(order_id),
     FOREIGN KEY (pizza_id) REFERENCES pizza(pizza_id) ON DELETE SET NULL
+);
+
+CREATE TABLE pizza_ingredient(
+	pizza_id INT NOT NULL,
+    ingredient_id INT NOT NULL,
+    PRIMARY KEY (pizza_id, ingredient_id),
+    FOREIGN KEY (pizza_id) REFERENCES pizza(pizza_id),
+    FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id)
 );
 
 CREATE TABLE order_item_customization(

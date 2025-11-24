@@ -216,7 +216,7 @@ END$
 
 DROP PROCEDURE IF EXISTS findPizzasByIngredient $
 CREATE PROCEDURE findPizzasByIngredient (
-	IN ingredient_name VARCHAR(50)
+	IN ingredient_id INT
 )
 BEGIN
 	SELECT 
@@ -231,7 +231,7 @@ BEGIN
 		SELECT pi2.pizza_id
         FROM pizza_ingredient pi2
         JOIN ingredient i2 ON pi2.ingredient_id = i2.ingredient_id
-        WHERE i2.ingredient_name = ingredient_name
+        WHERE i2.ingredient_id = ingredient_id
     )
 	GROUP BY p.pizza_id, p.pizza_name, p.pizza_price;
 END$
